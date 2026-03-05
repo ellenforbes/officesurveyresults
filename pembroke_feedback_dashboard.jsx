@@ -74,7 +74,7 @@ const themeColors = {
   layout: COLORS.navy,
   concern: COLORS.red,
   spaces: COLORS.purple,
-  positive: COLORS.grey,
+  positive: COLORS.textBody,
 };
 
 const themeLabels = {
@@ -282,8 +282,8 @@ export default function App() {
           <StatPill value="7/7" label="Support the move" color={COLORS.navy} />
           <StatPill value="43%" label="Strongly support" color={COLORS.purple} />
           <StatPill value="4.1★" label="Avg. first impression" color={COLORS.red} />
-          <StatPill value="86%" label="Space capacity met" color={COLORS.grey} />
-          <StatPill value="86%" label="Comfortable temp." color={COLORS.slate} />
+          <StatPill value="100%" label="Space capacity met" color={COLORS.textBody} />
+          <StatPill value="86%" label="Comfortable temp." color={COLORS.textBody} />
         </div>
 
         {/* Charts row */}

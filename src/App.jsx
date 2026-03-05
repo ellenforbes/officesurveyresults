@@ -11,6 +11,9 @@ const COLORS = {
   slate:     "#B8CED9",
   fog:       "#f2f1f6",
   mist:      "#e8e5ed",
+  // darker text variants for use on white/light backgrounds
+  textBody:  "#3d3a52",
+  textMuted: "#5c5876",
 };
 
 const feedbackData = {
@@ -26,7 +29,7 @@ const feedbackData = {
   q3_collaboration: [
     { name: "Much Better", value: 1, color: COLORS.navy },
     { name: "Somewhat Better", value: 4, color: COLORS.purple },
-    { name: "About the Same", value: 2, color: COLORS.slate },
+    { name: "About the Same", value: 2, color: COLORS.textMuted },
   ],
   q4_focus: [
     { name: "Needs Improvement", value: 6, color: COLORS.red },
@@ -34,7 +37,7 @@ const feedbackData = {
   ],
   q5_temp: [
     { name: "Comfortable", value: 6, color: COLORS.navy },
-    { name: "Slightly Cold", value: 1, color: COLORS.slate },
+    { name: "Slightly Cold", value: 1, color: COLORS.textMuted },
   ],
   q2_capacity: [
     { name: "Yes, Definitely", value: 5, color: COLORS.navy },
@@ -71,7 +74,7 @@ const themeColors = {
   layout: COLORS.navy,
   concern: COLORS.red,
   spaces: COLORS.purple,
-  positive: COLORS.grey,
+  positive: COLORS.textBody,
 };
 
 const themeLabels = {
@@ -97,7 +100,7 @@ const CustomTooltip = ({ active, payload }) => {
         <p style={{ margin: 0, fontWeight: 600, color: COLORS.navy, fontSize: 13 }}>
           {payload[0].name}
         </p>
-        <p style={{ margin: "4px 0 0", color: COLORS.slate, fontSize: 12 }}>
+        <p style={{ margin: "4px 0 0", color: COLORS.textMuted, fontSize: 12 }}>
           {payload[0].value} respondent{payload[0].value !== 1 ? "s" : ""}
         </p>
       </div>
@@ -137,7 +140,7 @@ const DonutChart = ({ data, title, subtitle }) => {
         {data.map((d, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 4 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, background: d.color, flexShrink: 0 }} />
-            <span style={{ fontSize: 12, color: COLORS.slate, fontFamily: "'DM Sans', sans-serif" }}>
+            <span style={{ fontSize: 12, color: COLORS.textMuted, fontFamily: "'DM Sans', sans-serif" }}>
               {d.name} <strong style={{ color: COLORS.navy }}>({d.value})</strong>
             </span>
           </div>
@@ -152,7 +155,7 @@ const HorizBar = ({ data, max }) => (
     {data.map((d, i) => (
       <div key={i}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-          <span style={{ fontSize: 12, color: COLORS.slate, fontFamily: "'DM Sans', sans-serif" }}>{d.name}</span>
+          <span style={{ fontSize: 12, color: COLORS.textMuted, fontFamily: "'DM Sans', sans-serif" }}>{d.name}</span>
           <span style={{ fontSize: 12, fontWeight: 700, color: COLORS.navy, fontFamily: "'DM Sans', sans-serif" }}>{d.value}</span>
         </div>
         <div style={{ height: 8, background: COLORS.mist, borderRadius: 4, overflow: "hidden" }}>
@@ -218,7 +221,7 @@ const StatPill = ({ value, label, color }) => (
     <span style={{ fontSize: 32, fontWeight: 800, color, fontFamily: "'DM Serif Display', serif", lineHeight: 1 }}>
       {value}
     </span>
-    <span style={{ fontSize: 11, color: COLORS.slate, fontFamily: "'DM Sans', sans-serif", textAlign: "center", lineHeight: 1.3 }}>
+    <span style={{ fontSize: 11, color: COLORS.textMuted, fontFamily: "'DM Sans', sans-serif", textAlign: "center", lineHeight: 1.3 }}>
       {label}
     </span>
   </div>
@@ -253,7 +256,7 @@ export default function App() {
         padding: "32px 40px 28px",
         borderBottom: `4px solid ${COLORS.red}`,
       }}>
-        <p style={{ margin: "0 0 4px", color: COLORS.slate, fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <p style={{ margin: "0 0 4px", color: COLORS.textMuted, fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
           Pembroke Resources · March 2026
         </p>
         <h1 style={{ margin: 0, color: "white", fontSize: 28, fontFamily: "'DM Serif Display', serif", fontWeight: 400, lineHeight: 1.2 }}>
@@ -279,8 +282,8 @@ export default function App() {
           <StatPill value="7/7" label="Support the move" color={COLORS.navy} />
           <StatPill value="43%" label="Strongly support" color={COLORS.purple} />
           <StatPill value="4.1★" label="Avg. first impression" color={COLORS.red} />
-          <StatPill value="86%" label="Space capacity met" color={COLORS.grey} />
-          <StatPill value="86%" label="Comfortable temp." color={COLORS.slate} />
+          <StatPill value="100%" label="Space capacity met" color={COLORS.textBody} />
+          <StatPill value="86%" label="Comfortable temp." color={COLORS.textBody} />
         </div>
 
         {/* Charts row */}
@@ -298,7 +301,7 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Overall Recommendation
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>All 7 respondents support the move</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>All 7 respondents support the move</p>
             <DonutChart data={feedbackData.q7_recommendation} />
           </div>
 
@@ -307,7 +310,7 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               First Impression
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>Reactions to the new office space</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>Reactions to the new office space</p>
             <DonutChart data={feedbackData.q1_impression} />
           </div>
 
@@ -316,7 +319,7 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Collaboration Potential
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>Compared to current space</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>Compared to current space</p>
             <DonutChart data={feedbackData.q3_collaboration} />
           </div>
         </div>
@@ -335,21 +338,21 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Space Capacity
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>Will it fit the team?</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>Will it fit the team?</p>
             <HorizBar data={feedbackData.q2_capacity} />
           </div>
           <div style={{ background: "white", borderRadius: 14, padding: "22px 20px", boxShadow: "0 2px 10px rgba(31,31,85,0.07)" }}>
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Focus Work
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>Does the space support deep work?</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>Does the space support deep work?</p>
             <HorizBar data={feedbackData.q4_focus} />
           </div>
           <div style={{ background: "white", borderRadius: 14, padding: "22px 20px", boxShadow: "0 2px 10px rgba(31,31,85,0.07)" }}>
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Temperature
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.slate }}>Thermal comfort in the space</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>Thermal comfort in the space</p>
             <HorizBar data={feedbackData.q5_temp} />
           </div>
         </div>
@@ -370,13 +373,13 @@ export default function App() {
               <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                 Most Common Themes
               </h3>
-              <p style={{ margin: 0, fontSize: 11, color: COLORS.slate }}>Key words and concepts from open text responses — size reflects frequency</p>
+              <p style={{ margin: 0, fontSize: 11, color: COLORS.textMuted }}>Key words and concepts from open text responses — size reflects frequency</p>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {Object.entries(themeColors).map(([key, color]) => (
                 <div key={key} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                   <div style={{ width: 9, height: 9, borderRadius: 2, background: color }} />
-                  <span style={{ fontSize: 11, color: COLORS.slate }}>{themeLabels[key]}</span>
+                  <span style={{ fontSize: 11, color: COLORS.textMuted }}>{themeLabels[key]}</span>
                 </div>
               ))}
             </div>
@@ -405,12 +408,12 @@ export default function App() {
               <h4 style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: themeColors[theme.key] }}>
                 {theme.label}
               </h4>
-              <p style={{ margin: 0, fontSize: 12, color: COLORS.slate, lineHeight: 1.6 }}>{theme.desc}</p>
+              <p style={{ margin: 0, fontSize: 12, color: COLORS.textBody, lineHeight: 1.6 }}>{theme.desc}</p>
             </div>
           ))}
         </div>
 
-        <p style={{ marginTop: 28, fontSize: 11, color: COLORS.silver, textAlign: "center" }}>
+        <p style={{ marginTop: 28, fontSize: 11, color: COLORS.textMuted, textAlign: "center" }}>
           Pembroke Resources · Office Relocation Feedback · 7 Respondents · March 2026
         </p>
       </div>
