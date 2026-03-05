@@ -18,48 +18,49 @@ const COLORS = {
 
 const feedbackData = {
   q7_recommendation: [
-    { name: "Strongly Support", value: 3, color: COLORS.navy },
+    { name: "Strongly Support", value: 4, color: COLORS.navy },
     { name: "Support w/ Reservations", value: 4, color: COLORS.purple },
   ],
   q1_impression: [
     { name: "3 – Neutral", value: 1, color: COLORS.silver },
     { name: "4 – Positive", value: 4, color: COLORS.purple },
-    { name: "5 – Very Positive", value: 2, color: COLORS.navy },
+    { name: "5 – Very Positive", value: 3, color: COLORS.navy },
   ],
   q3_collaboration: [
     { name: "Much Better", value: 1, color: COLORS.navy },
-    { name: "Somewhat Better", value: 4, color: COLORS.purple },
+    { name: "Somewhat Better", value: 5, color: COLORS.purple },
     { name: "About the Same", value: 2, color: COLORS.textMuted },
   ],
   q4_focus: [
-    { name: "Needs Improvement", value: 6, color: COLORS.red },
+    { name: "Needs Improvement", value: 7, color: COLORS.red },
     { name: "Yes", value: 1, color: COLORS.navy },
   ],
   q5_temp: [
-    { name: "Comfortable", value: 6, color: COLORS.navy },
+    { name: "Comfortable", value: 7, color: COLORS.navy },
     { name: "Slightly Cold", value: 1, color: COLORS.textMuted },
   ],
   q2_capacity: [
-    { name: "Yes, Definitely", value: 5, color: COLORS.navy },
+    { name: "Yes, Definitely", value: 6, color: COLORS.navy },
     { name: "Yes, Mostly", value: 2, color: COLORS.purple },
   ],
 };
 
 const wordCloudData = [
   { text: "open plan", size: 52, theme: "layout" },
-  { text: "partitions", size: 46, theme: "layout" },
+  { text: "partitions", size: 50, theme: "layout" },
   { text: "noise", size: 44, theme: "concern" },
-  { text: "meeting rooms", size: 40, theme: "spaces" },
+  { text: "meeting rooms", size: 46, theme: "spaces" },
   { text: "breakout rooms", size: 38, theme: "spaces" },
   { text: "pods", size: 36, theme: "layout" },
   { text: "quiet spaces", size: 34, theme: "spaces" },
   { text: "collaboration", size: 32, theme: "positive" },
   { text: "desks", size: 30, theme: "layout" },
+  { text: "hybrid working", size: 28, theme: "concern" },
   { text: "WFH", size: 28, theme: "concern" },
   { text: "privacy", size: 28, theme: "concern" },
   { text: "seating", size: 26, theme: "layout" },
   { text: "phone rooms", size: 24, theme: "spaces" },
-  { text: "standing desks", size: 22, theme: "positive" },
+  { text: "standing desks", size: 26, theme: "positive" },
   { text: "team pods", size: 20, theme: "positive" },
   { text: "adjustable desks", size: 18, theme: "positive" },
   { text: "focus work", size: 18, theme: "concern" },
@@ -84,7 +85,7 @@ const themeLabels = {
   positive: "Opportunities",
 };
 
-const TOTAL = 7;
+const TOTAL = 8;
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -228,10 +229,10 @@ const StatPill = ({ value, label, color }) => (
 );
 
 const themes = [
-  { key: "layout", icon: "⬜", label: "Layout Concerns", desc: "Pod-style desk arrangements, partitions between teams, and better seating configuration appeared in nearly every response." },
-  { key: "spaces", icon: "🚪", label: "Need for Quiet Spaces", desc: "Consistent demand for small breakout / phone rooms to replace exec offices, enabling focused work and private calls." },
-  { key: "concern", icon: "📢", label: "Noise & Open Plan", desc: "Open plan noise is the top concern. Respondents want rules and physical barriers to manage sound in shared areas." },
-  { key: "positive", icon: "✨", label: "Collaboration Optimism", desc: "Most see the move as an opportunity. Standing desks, team pods, and managers sitting among staff were popular ideas." },
+  { key: "layout", icon: "⬜", label: "Layout Concerns", desc: "Pod-style desk arrangements, partitions between teams, and better seating configuration appeared in nearly every response. Privacy screens were a recurring specific request." },
+  { key: "spaces", icon: "🚪", label: "Need for Quiet Spaces", desc: "More meeting rooms was the most requested improvement. Consistent demand also for small breakout and phone rooms to support focused work and private calls." },
+  { key: "concern", icon: "📢", label: "Noise & Hybrid Working", desc: "Open plan noise remains the top concern, with all 8 respondents flagging focus work as needing improvement. Hybrid working adjustments were also raised as a priority." },
+  { key: "positive", icon: "✨", label: "Collaboration Optimism", desc: "Most see the move as an opportunity. Standing desks, team pods, and managers sitting among staff were popular ideas across multiple responses." },
 ];
 
 export default function App() {
@@ -249,6 +250,11 @@ export default function App() {
       padding: "0 0 48px",
     }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      <style>{`
+        @media (max-width: 640px) {
+          .charts-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
 
       {/* Header */}
       <div style={{
@@ -263,7 +269,7 @@ export default function App() {
           New Office Feedback Summary
         </h1>
         <p style={{ margin: "8px 0 0", color: COLORS.silver, fontSize: 13 }}>
-          7 responses · Submitted 5 March 2026 · Brisbane office relocation survey
+          8 responses · Submitted 5 March 2026 · Brisbane office relocation survey
         </p>
       </div>
 
@@ -279,15 +285,15 @@ export default function App() {
           transform: loaded ? "none" : "translateY(12px)",
           transition: "all 0.5s ease",
         }}>
-          <StatPill value="7/7" label="Support the move" color={COLORS.navy} />
-          <StatPill value="43%" label="Strongly support" color={COLORS.purple} />
-          <StatPill value="4.1★" label="Avg. first impression" color={COLORS.red} />
+          <StatPill value="8/8" label="Support the move" color={COLORS.navy} />
+          <StatPill value="50%" label="Strongly support" color={COLORS.purple} />
+          <StatPill value="4.3★" label="Avg. first impression" color={COLORS.red} />
           <StatPill value="100%" label="Space capacity met" color={COLORS.textBody} />
-          <StatPill value="86%" label="Comfortable temp." color={COLORS.textBody} />
+          <StatPill value="88%" label="Comfortable temp." color={COLORS.textBody} />
         </div>
 
         {/* Charts row */}
-        <div style={{
+        <div className="charts-grid" style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gap: 16,
@@ -301,7 +307,7 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Overall Recommendation
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>All 7 respondents support the move</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>All 8 respondents support the move</p>
             <DonutChart data={feedbackData.q7_recommendation} />
           </div>
 
@@ -325,7 +331,7 @@ export default function App() {
         </div>
 
         {/* Secondary charts row */}
-        <div style={{
+        <div className="charts-grid" style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gap: 16,
@@ -414,7 +420,7 @@ export default function App() {
         </div>
 
         <p style={{ marginTop: 28, fontSize: 11, color: COLORS.textMuted, textAlign: "center" }}>
-          Pembroke Resources · Office Relocation Feedback · 7 Respondents · March 2026
+          Pembroke Resources · Office Relocation Feedback · 8 Respondents · March 2026
         </p>
       </div>
     </div>
