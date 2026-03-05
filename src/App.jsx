@@ -45,31 +45,80 @@ const feedbackData = {
   ],
 };
 
-const wordCloudData = [
-  { text: "open plan", size: 52, theme: "layout" },
-  { text: "partitions", size: 50, theme: "layout" },
-  { text: "noise", size: 44, theme: "concern" },
-  { text: "meeting rooms", size: 46, theme: "spaces" },
-  { text: "breakout rooms", size: 38, theme: "spaces" },
-  { text: "pods", size: 36, theme: "layout" },
-  { text: "quiet spaces", size: 34, theme: "spaces" },
-  { text: "collaboration", size: 32, theme: "positive" },
-  { text: "desks", size: 30, theme: "layout" },
-  { text: "hybrid working", size: 28, theme: "concern" },
-  { text: "WFH", size: 28, theme: "concern" },
-  { text: "privacy", size: 28, theme: "concern" },
-  { text: "seating", size: 26, theme: "layout" },
-  { text: "phone rooms", size: 24, theme: "spaces" },
-  { text: "standing desks", size: 26, theme: "positive" },
-  { text: "team pods", size: 20, theme: "positive" },
-  { text: "adjustable desks", size: 18, theme: "positive" },
-  { text: "focus work", size: 18, theme: "concern" },
-  { text: "storage", size: 14, theme: "concern" },
-  { text: "plants", size: 14, theme: "positive" },
-  { text: "blinds", size: 12, theme: "layout" },
-  { text: "reception area", size: 14, theme: "spaces" },
-  { text: "executive offices", size: 16, theme: "spaces" },
+// ─── Raw open-text responses (Q6 + Q8 per respondent) ────────────────────────
+// To add a new response: append a new object to this array. The word cloud
+// and phrase counts will update automatically.
+const rawResponses = [
+  {
+    q6: "Think it needs more quite sound proof break out rooms for calls or deep thinking work, also reconfiguring work station layout to be more spacious and private",
+    q8: "Think it would be worthwhile making changes to the 3 offices 1x meeting room and others small quite rooms / focus spaces. Also reception area could be reconfigured into small phone / teams work stations. Blinds? Less but better laid out work stations",
+  },
+  {
+    q6: "No comments of note.",
+    q8: "No comments of note.",
+  },
+  {
+    q6: "There is adequate seating for our Brisbane staff although I do not think the configuration of seating supports team collaboration. It would be beneficial for additional privacy, noise reduction and collaboration if desks could be arranged into a more pod formation where teams sit together - if this isn't possible partitioning and plants could also help.",
+    q8: "The move will mean an increased amount of people sharing a reduced space which will have impact on the noise levels. I think if the rule is that nobody will have office spaces at least 2 of them are turned into smaller breakout rooms like the small phone one to allow for a quiet space to work or a place to take a call. Expect to see a potential rise in WFH.",
+  },
+  {
+    q6: "Open plan will likely be too noisy unless some changes. For example, higher softer partitions between team members, having three rows of open plan desks rather than 4, adding some additional small quiet room places.",
+    q8: "Not a fan of open plan but if partitions are appropriate and people consider others before having loud phone calls in the open areas, then it may be manageable.",
+  },
+  {
+    q6: "Hoping that we are in a smaller space, closer, not so spread out that it will encourage interaction and collaboration.",
+    q8: "Refer comments above.",
+  },
+  {
+    q6: "Minor adjustments required to make it comfortable ie desk screening and planter boxes",
+    q8: "Fit for purpose might just need desk configurations changed.",
+  },
+  {
+    q6: "Definitely like the office and am pretty happy with layout, would like teams to sit together. Some people who are loud might be better in individual offices.",
+    q8: "Standing desks or adjustable desks would be a great addition. Just better desk partitioning, maybe pods where I can turn around and talk to other people in my team easier.",
+  },
+  {
+    q6: "All good",
+    q8: "More meeting rooms, partitioning / privacy screens, hybrid working adjustments, standing desks",
+  },
 ];
+
+// ─── Phrase definitions ────────────────────────────────────────────────────────
+// Each entry defines a display label, keywords to match (case-insensitive),
+// and a theme. Size is auto-calculated from how many responses mention it.
+const phraseDefinitions = [
+  { text: "partitions",       keywords: ["partition"],              theme: "layout"   },
+  { text: "desks",            keywords: ["desk", "work station"],   theme: "layout"   },
+  { text: "open plan",        keywords: ["open plan"],              theme: "concern"  },
+  { text: "noise",            keywords: ["nois", "noisy", "loud"],  theme: "concern"  },
+  { text: "quiet spaces",     keywords: ["quiet", "sound proof", "focus space"], theme: "spaces" },
+  { text: "collaboration",    keywords: ["collaborat"],             theme: "positive" },
+  { text: "privacy",          keywords: ["privac", "private", "screening", "privacy screen"], theme: "concern" },
+  { text: "pods",             keywords: ["pod"],                    theme: "layout"   },
+  { text: "breakout rooms",   keywords: ["breakout", "break out"],  theme: "spaces"   },
+  { text: "meeting rooms",    keywords: ["meeting room"],           theme: "spaces"   },
+  { text: "standing desks",   keywords: ["standing desk"],          theme: "positive" },
+  { text: "phone rooms",      keywords: ["phone room", "phone /", "small phone"], theme: "spaces" },
+  { text: "plants",           keywords: ["plant"],                  theme: "positive" },
+  { text: "team seating",     keywords: ["teams sit", "sit together", "teams to sit"], theme: "layout" },
+  { text: "adjustable desks", keywords: ["adjustable desk"],        theme: "positive" },
+  { text: "focus work",       keywords: ["focus", "deep thinking"], theme: "concern"  },
+  { text: "WFH",              keywords: ["wfh", "work from home"],  theme: "concern"  },
+  { text: "hybrid working",   keywords: ["hybrid"],                 theme: "concern"  },
+  { text: "reception area",   keywords: ["reception"],              theme: "spaces"   },
+  { text: "blinds",           keywords: ["blind"],                  theme: "layout"   },
+  { text: "seating",          keywords: ["seating", "seat"],        theme: "layout"   },
+  { text: "executive offices",keywords: ["individual office", "exec office"], theme: "spaces" },
+];
+
+// ─── Auto-compute word cloud from raw responses ───────────────────────────────
+const wordCloudData = phraseDefinitions.map(phrase => {
+  const count = rawResponses.filter(r => {
+    const text = `${r.q6} ${r.q8}`.toLowerCase();
+    return phrase.keywords.some(kw => text.includes(kw.toLowerCase()));
+  }).length;
+  return { text: phrase.text, size: 10 + count * 9, theme: phrase.theme, count };
+}).filter(d => d.count > 0);
 
 const themeColors = {
   layout: COLORS.navy,
