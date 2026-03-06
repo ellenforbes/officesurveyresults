@@ -144,7 +144,21 @@ const themeLabels = {
   positive: "Opportunities",
 };
 
-const TOTAL = 8;
+// ─── Derived totals (auto-update when feedbackData or rawResponses change) ────
+const TOTAL = rawResponses.length;
+
+const totalSupport     = feedbackData.q7_recommendation.reduce((s, d) => s + d.value, 0);
+const stronglySupport  = feedbackData.q7_recommendation.find(d => d.name === "Strongly Support")?.value ?? 0;
+const totalCapacity    = feedbackData.q2_capacity.reduce((s, d) => s + d.value, 0);
+const comfortableTemp  = feedbackData.q5_temp.find(d => d.name === "Comfortable")?.value ?? 0;
+const avgImpression    = (
+  feedbackData.q1_impression.reduce((s, d) => {
+    const score = parseFloat(d.name);
+    return s + (isNaN(score) ? 0 : score * d.value);
+  }, 0) / TOTAL
+).toFixed(1);
+
+const pct = (n, d = TOTAL) => `${Math.round((n / d) * 100)}%`;
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -290,7 +304,7 @@ const StatPill = ({ value, label, color }) => (
 const themes = [
   { key: "layout", icon: "⬜", label: "Layout Concerns", desc: "Pod-style desk arrangements, partitions between teams, and better seating configuration appeared in nearly every response. Privacy screens were a recurring specific request." },
   { key: "spaces", icon: "🚪", label: "Need for Quiet Spaces", desc: "More meeting rooms was the most requested improvement. Consistent demand also for small breakout and phone rooms to support focused work and private calls." },
-  { key: "concern", icon: "📢", label: "Noise & Hybrid Working", desc: "Open plan noise remains the top concern, with all 8 respondents flagging focus work as needing improvement. Hybrid working adjustments were also raised as a priority." },
+  { key: "concern", icon: "📢", label: "Noise & Hybrid Working", desc: `Open plan noise remains the top concern, with all ${TOTAL} respondents flagging focus work as needing improvement. Hybrid working adjustments were also raised as a priority.` },
   { key: "positive", icon: "✨", label: "Collaboration Optimism", desc: "Most see the move as an opportunity. Standing desks, team pods, and managers sitting among staff were popular ideas across multiple responses." },
 ];
 
@@ -328,7 +342,7 @@ export default function App() {
           New Office Feedback Summary
         </h1>
         <p style={{ margin: "8px 0 0", color: COLORS.silver, fontSize: 13 }}>
-          8 responses · Submitted 5 March 2026 · Brisbane office relocation survey
+          {TOTAL} responses · Submitted 5 March 2026 · Brisbane office relocation survey
         </p>
       </div>
 
@@ -344,11 +358,11 @@ export default function App() {
           transform: loaded ? "none" : "translateY(12px)",
           transition: "all 0.5s ease",
         }}>
-          <StatPill value="8/8" label="Support the move" color={COLORS.navy} />
-          <StatPill value="50%" label="Strongly support" color={COLORS.purple} />
-          <StatPill value="4.3★" label="Avg. first impression" color={COLORS.red} />
-          <StatPill value="100%" label="Space capacity met" color={COLORS.textBody} />
-          <StatPill value="88%" label="Comfortable temp." color={COLORS.textBody} />
+          <StatPill value={`${totalSupport}/${TOTAL}`} label="Support the move" color={COLORS.navy} />
+          <StatPill value={pct(stronglySupport)} label="Strongly support" color={COLORS.purple} />
+          <StatPill value={`${avgImpression}★`} label="Avg. first impression" color={COLORS.red} />
+          <StatPill value={pct(totalCapacity)} label="Space capacity met" color={COLORS.textBody} />
+          <StatPill value={pct(comfortableTemp)} label="Comfortable temp." color={COLORS.textBody} />
         </div>
 
         {/* Charts row */}
@@ -366,7 +380,7 @@ export default function App() {
             <h3 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: COLORS.navy, textTransform: "uppercase", letterSpacing: "0.06em" }}>
               Overall Recommendation
             </h3>
-            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>All 8 respondents support the move</p>
+            <p style={{ margin: "0 0 16px", fontSize: 11, color: COLORS.textMuted }}>All {TOTAL} respondents support the move</p>
             <DonutChart data={feedbackData.q7_recommendation} />
           </div>
 
@@ -479,7 +493,7 @@ export default function App() {
         </div>
 
         <p style={{ marginTop: 28, fontSize: 11, color: COLORS.textMuted, textAlign: "center" }}>
-          Pembroke Resources · Office Relocation Feedback · 8 Respondents · March 2026
+          Pembroke Resources · Office Relocation Feedback · {TOTAL} Respondents · March 2026
         </p>
       </div>
     </div>
