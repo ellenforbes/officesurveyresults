@@ -18,29 +18,30 @@ const COLORS = {
 
 const feedbackData = {
   q7_recommendation: [
-    { name: "Strongly Support", value: 4, color: COLORS.navy },
+    { name: "Strongly Support", value: 6, color: COLORS.navy },
     { name: "Support w/ Reservations", value: 4, color: COLORS.purple },
   ],
   q1_impression: [
     { name: "3 – Neutral", value: 1, color: COLORS.silver },
     { name: "4 – Positive", value: 4, color: COLORS.purple },
-    { name: "5 – Very Positive", value: 3, color: COLORS.navy },
+    { name: "5 – Very Positive", value: 5, color: COLORS.navy },
   ],
   q3_collaboration: [
     { name: "Much Better", value: 1, color: COLORS.navy },
-    { name: "Somewhat Better", value: 5, color: COLORS.purple },
-    { name: "About the Same", value: 2, color: COLORS.textMuted },
+    { name: "Somewhat Better", value: 6, color: COLORS.purple },
+    { name: "About the Same", value: 3, color: COLORS.textMuted },
   ],
   q4_focus: [
     { name: "Needs Improvement", value: 7, color: COLORS.red },
     { name: "Yes", value: 1, color: COLORS.navy },
+    { name: "Unsure", value: 2, color: COLORS.textMuted },
   ],
   q5_temp: [
-    { name: "Comfortable", value: 7, color: COLORS.navy },
+    { name: "Comfortable", value: 9, color: COLORS.navy },
     { name: "Slightly Cold", value: 1, color: COLORS.textMuted },
   ],
   q2_capacity: [
-    { name: "Yes, Definitely", value: 6, color: COLORS.navy },
+    { name: "Yes, Definitely", value: 8, color: COLORS.navy },
     { name: "Yes, Mostly", value: 2, color: COLORS.purple },
   ],
 };
@@ -81,6 +82,14 @@ const rawResponses = [
     q6: "All good",
     q8: "More meeting rooms, partitioning / privacy screens, hybrid working adjustments, standing desks",
   },
+  {
+    q6: "looks good",
+    q8: "none",
+  },
+  {
+    q6: "See my improvement and suggestions.",
+    q8: "Reception Area is not needed. Should be turned into 2 phone booths. Or one of those spaces could possibly house the Printer so its quieter. Barrier is needed between the kitchen and the workspace and the Printer. The desks need barriers on them to define depth and width. The desks there are slightly smaller than ours. More depth is better for working on screens, rather than less. Not essential, but the working desks could be transformed into pods. 4 for HR; 6 for Finance; 4 for Marketing/Logistics; 2 sets of 4 for the Tech Services and Engineers; 4 for Environmental/Permitting; then 1 long desk against the wall for Hot Desks with 4 or 5 seats each side. Not essential but the middle Exec Office could be turned into 2 smaller meeting rooms for quiet, collaborative work. Not essential but one of the small meeting rooms should be with a standing desk like our library, with high chairs, stools.",
+  },
 ];
 
 // ─── Phrase definitions ────────────────────────────────────────────────────────
@@ -98,7 +107,7 @@ const phraseDefinitions = [
   { text: "breakout rooms",   keywords: ["breakout", "break out"],  theme: "spaces"   },
   { text: "meeting rooms",    keywords: ["meeting room"],           theme: "spaces"   },
   { text: "standing desks",   keywords: ["standing desk"],          theme: "positive" },
-  { text: "phone rooms",      keywords: ["phone room", "phone /", "small phone"], theme: "spaces" },
+  { text: "phone rooms",      keywords: ["phone room", "phone /", "small phone", "phone booth"], theme: "spaces" },
   { text: "plants",           keywords: ["plant"],                  theme: "positive" },
   { text: "team seating",     keywords: ["teams sit", "sit together", "teams to sit"], theme: "layout" },
   { text: "adjustable desks", keywords: ["adjustable desk"],        theme: "positive" },
@@ -109,6 +118,7 @@ const phraseDefinitions = [
   { text: "blinds",           keywords: ["blind"],                  theme: "layout"   },
   { text: "seating",          keywords: ["seating", "seat"],        theme: "layout"   },
   { text: "executive offices",keywords: ["individual office", "exec office"], theme: "spaces" },
+  { text: "barriers",         keywords: ["barrier"],                theme: "layout"   },
 ];
 
 // ─── Auto-compute word cloud from raw responses ───────────────────────────────
